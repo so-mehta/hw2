@@ -14,17 +14,42 @@ std::string convToLower(std::string src)
 /** Complete the code to convert a string containing a rawWord
     to a set of words based on the criteria given in the assignment **/
 std::set<std::string> parseStringToWords(string rawWords)
-{
+{ 
+    std::set<std::string> newSet;
+    //makes every word in rawWords lowercase
+    std::string param = convToLower(rawWords);
+
+    std::stringstream ss(param);
+    std::string word;
+
+    
+    while (ss >> word){
+      bool noPunct = true; 
+      for (int i = 0; i <word.size(); i++){
+        if ((word[i] < 'a') || (word[i] > 'z')) { //punctuation reached
+            noPunct = false;
+
+            if (word.size() == 2){ //case 1: just one letter like "J."
+              i = word.size();
+            } else if (i == 1){ //case 2: punctuation after first letter, like "I'll"
+              newSet.insert(word.substr(0,1) + word.substr(2,1));
+              i=word.size();
+            } else { //case 3: insert word as is before punctuation
+              newSet.insert(word.substr(0,i));
+              i = word.size();
+
+            }
+
+        } 
+      }
+      if (noPunct){ /* if no punctuation found in word, add word to set as is*/
+        newSet.insert(word);
+      }
+
+    }
 
 
-
-
-
-
-
-
-
-
+  return newSet;
 }
 
 /**************************************************
